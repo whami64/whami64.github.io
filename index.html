@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pwnd by whami</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+    #particles-js {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    .center-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 1;
+      width: 100vw;
+    }
+    .center-content h1 {
+      font-size: 2.5rem;
+      font-weight: 400;
+      margin: 0.5rem 0 2.5rem 0;
+      letter-spacing: 1px;
+    }
+    .profile-pic {
+      margin-bottom: 1rem;
+    }
+    .profile-pic img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    .description {
+      font-size: 1.1rem;
+      color: #fff;
+      margin: 0 0 2.5rem 0;
+      font-weight: 300;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .social-icon {
+      color: #fff;
+      font-size: 2rem;
+      transition: color 0.3s ease;
+      text-decoration: none;
+    }
+    .social-icon:hover {
+      color: #ff7300;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .btn-round {
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 30px;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      font-family: inherit;
+      cursor: pointer;
+      width: 160px;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+    }
+    .btn-round i {
+      font-size: 1.2em;
+      margin-right: 0.5em;
+    }
+    .btn-round:hover {
+      background: rgba(255,255,255,0.1);
+      color: #ff7300;
+      border-color: #ff7300;
+    }
+    @media (max-width: 600px) {
+      .center-content h1 { font-size: 2.2rem; }
+      .btn-round { font-size: 0.95rem; min-width: 90px; padding: 0.5rem 1rem; }
+    }
+    
+    .custom-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .popup-content {
+      background: #1a1a1a;
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      width: 90%;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .popup-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .popup-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+    }
+    
+    .popup-body {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .popup-body p {
+      margin: 0 0 15px 0;
+      font-size: 1rem;
+    }
+    
+    .email-field {
+      background: #333;
+      border: 1px solid #555;
+      border-radius: 5px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+    
+    .popup-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .btn-copy, .btn-cancel {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      min-width: 80px;
+    }
+    
+    .btn-copy {
+      background: #8b5cf6;
+      color: #fff;
+    }
+    
+    .btn-cancel {
+      background: #555;
+      color: #fff;
+    }
+    
+    .btn-copy:hover {
+      background: #7c3aed;
+    }
+    
+    .btn-cancel:hover {
+      background: #666;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="center-content">
+    <div class="profile-pic">
+      <img src="https://cdn.discordapp.com/avatars/254809236410728448/a_5b4efc8feda30187bb79fc5c065c2af6.gif?size=2048&animated=true" alt="Profile Picture">
+    </div>
+    <h1>whami</h1>
+    <p class="description">hi my name is whami I do web dev js,py,html,css and pentest</p>
+    <div class="btn-group">
+      <button class="btn-round" onclick="window.open('https://github.com/whami64', '_blank')"><i class="fab fa-github"></i>GitHub</button>
+      <button class="btn-round" onclick="window.open('https://t.me/miawhack', '_blank')"><i class="fab fa-telegram"></i>Telegram</button>
+      <button class="btn-round" onclick="copyEmail()"><i class="fas fa-envelope"></i>Contact</button>
+    </div>
+  </div>
+  <!-- particles.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    function copyEmail() {
+      showCustomPopup();
+    }
+    
+    function showCustomPopup() {
+      const popup = document.createElement('div');
+      popup.className = 'custom-popup';
+      popup.innerHTML = `
+        <div class="popup-content">
+          <div class="popup-header">
+            <span class="popup-title">Are you sure?</span>
+            <button class="popup-close" onclick="closePopup()">×</button>
+          </div>
+          <div class="popup-body">
+            <p>You are going to copy</p>
+            <div class="email-field">zyuxn@yandex.com</div>
+          </div>
+          <div class="popup-buttons">
+            <button class="btn-copy" onclick="copyEmailAndClose()">Copie</button>
+            <button class="btn-cancel" onclick="closePopup()">Cancel</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(popup);
+    }
+    
+    function copyEmailAndClose() {
+      navigator.clipboard.writeText('zyuxn@yandex.com').then(function() {
+        showCopySuccess();
+        closePopup();
+      }).catch(function(err) {
+        console.error('Erreur lors de la copie : ', err);
+        showCopySuccess();
+        closePopup();
+      });
+    }
+    
+    function showCopySuccess() {
+      const successPopup = document.createElement('div');
+      successPopup.className = 'custom-popup';
+      successPopup.innerHTML = `
+        <div class="popup-content">
+          <div class="popup-body">
+            <p style="font-size: 1.1rem; margin-bottom: 10px;">Email copié :</p>
+            <div class="email-field">zyuxn@yandex.com</div>
+          </div>
+          <div class="popup-buttons">
+            <button class="btn-copy" onclick="closeSuccessPopup()">OK</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(successPopup);
+    }
+    
+    function closeSuccessPopup() {
+      const popup = document.querySelector('.custom-popup');
+      if (popup) {
+        popup.remove();
+      }
+    }
+    
+    function closePopup() {
+      const popup = document.querySelector('.custom-popup');
+      if (popup) {
+        popup.remove();
+      }
+    }
+    
+    particlesJS('particles-js', {
+      "particles": {
+        "number": { "value": 30, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#fff" },
+        "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000" } },
+        "opacity": { "value": 1, "random": false },
+        "size": { "value": 3, "random": true },
+        "line_linked": { "enable": true, "distance": 250, "color": "#fff", "opacity": 1, "width": 1 },
+        "move": { "enable": true, "speed": 8, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+      },
+      "interactivity": {
+        "detect_on": "window",
+        "events": {
+          "onhover": { "enable": true, "mode": "repulse" },
+          "onclick": { "enable": true, "mode": "push" },
+          "resize": true
+        },
+        "modes": {
+          "grab": { "distance": 250, "line_linked": { "opacity": 1, "color": "#fff", "width": 2 } },
+          "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 },
+          "repulse": { "distance": 300, "duration": 0.2 },
+          "push": { "particles_nb": 4 },
+          "remove": { "particles_nb": 2 }
+        }
+      },
+      "retina_detect": true
+    });
+  </script>
+</body>
+</html>
